@@ -47,9 +47,6 @@ An interactive **data analytics dashboard** built with **Python, Flask, Pandas, 
 
 ---
 
-
----
-
 ## 📂 Project Structure
 
 ```
