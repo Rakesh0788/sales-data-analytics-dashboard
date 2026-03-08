@@ -47,15 +47,6 @@ An interactive **data analytics dashboard** built with **Python, Flask, Pandas, 
 
 ---
 
-## 📊 Dashboard Preview
-
-(Add your dashboard screenshot here)
-
-Example:
-
-```
-images/dashboard.png
-```
 
 ---
 
