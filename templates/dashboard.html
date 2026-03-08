@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>AI Sales Intelligence Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-gray-100">
+
+<div class="max-w-7xl mx-auto p-8">
+
+<h1 class="text-4xl font-bold text-center mb-2">
+AI Sales Intelligence Dashboard
+</h1>
+
+<p class="text-center text-gray-500 mb-8">
+Interactive Data Analytics & Machine Learning Dashboard
+</p>
+
+
+<!-- FILTER -->
+
+<div class="flex justify-center mb-8">
+
+<form method="GET" class="flex gap-3">
+
+<select name="region" class="border p-2 rounded">
+
+<option value="">All Regions</option>
+
+{% for r in regions %}
+<option value="{{r}}">{{r}}</option>
+{% endfor %}
+
+</select>
+
+<button class="bg-blue-500 text-white px-4 py-2 rounded">
+Filter
+</button>
+
+</form>
+
+</div>
+
+
+<!-- KPI CARDS -->
+
+<div class="grid grid-cols-3 gap-6 mb-10">
+
+<div class="bg-white p-6 shadow rounded">
+<h2 class="text-gray-500">Sales Prediction</h2>
+<p class="text-2xl font-bold">{{prediction}}</p>
+</div>
+
+<div class="bg-white p-6 shadow rounded">
+<h2 class="text-gray-500">Total Revenue</h2>
+<p>{{insights[2]}}</p>
+</div>
+
+<div class="bg-white p-6 shadow rounded">
+<h2 class="text-gray-500">Top Product</h2>
+<p>{{insights[1]}}</p>
+</div>
+
+</div>
+
+
+<!-- SALES BY PRODUCT -->
+
+<div class="bg-white p-6 shadow rounded mb-10">
+
+<h2 class="text-xl font-bold mb-4">
+Sales by Product
+</h2>
+
+<canvas id="productChart" style="max-height:350px;"></canvas>
+
+</div>
+
+
+<!-- SALES BY REGION -->
+
+<div class="bg-white p-6 shadow rounded mb-10">
+
+<h2 class="text-xl font-bold mb-4">
+Sales by Region
+</h2>
+
+<canvas id="regionChart" style="max-height:350px;"></canvas>
+
+</div>
+
+
+<!-- MONTHLY SALES -->
+
+<div class="bg-white p-6 shadow rounded mb-10">
+
+<h2 class="text-xl font-bold mb-4">
+Monthly Sales Trend
+</h2>
+
+<canvas id="monthChart" style="max-height:350px;"></canvas>
+
+</div>
+
+
+<!-- AI ASSISTANT -->
+
+<div class="bg-white p-6 shadow rounded mb-10">
+
+<h2 class="text-xl font-bold mb-4">
+Ask AI
+</h2>
+
+<form method="POST" class="flex gap-3">
+
+<input
+name="question"
+class="border p-2 flex-1 rounded"
+placeholder="Example: top product">
+
+<button class="bg-green-500 text-white px-4 py-2 rounded">
+Ask
+</button>
+
+</form>
+
+{% if result %}
+<p class="mt-4 text-blue-600">
+{{result}}
+</p>
+{% endif %}
+
+</div>
+
+
+<!-- BUSINESS INSIGHTS -->
+
+<div class="bg-white p-6 shadow rounded">
+
+<h2 class="text-xl font-bold mb-4">
+Business Insights
+</h2>
+
+<ul class="list-disc ml-6">
+
+{% for i in insights %}
+<li>{{i}}</li>
+{% endfor %}
+
+</ul>
+
+</div>
+
+</div>
+
+
+<script>
+
+const productLabels = JSON.parse('{{ products | tojson | safe }}');
+const productValues = JSON.parse('{{ values | tojson | safe }}');
+
+new Chart(document.getElementById('productChart'), {
+
+type:'bar',
+
+data:{
+labels:productLabels,
+datasets:[{
+label:'Sales by Product',
+data:productValues,
+backgroundColor:[
+'#3b82f6',
+'#10b981',
+'#f59e0b',
+'#ef4444'
+]
+}]
+}
+
+});
+
+
+
+const regionLabels = JSON.parse('{{ region_labels | tojson | safe }}');
+const regionValues = JSON.parse('{{ region_values | tojson | safe }}');
+
+new Chart(document.getElementById('regionChart'), {
+
+type:'pie',
+
+data:{
+labels:regionLabels,
+datasets:[{
+data:regionValues,
+backgroundColor:[
+'#3b82f6',
+'#10b981',
+'#f59e0b',
+'#ef4444'
+]
+}]
+}
+
+});
+
+
+
+const monthLabels = JSON.parse('{{ month_labels | tojson | safe }}');
+const monthValues = JSON.parse('{{ month_values | tojson | safe }}');
+
+new Chart(document.getElementById('monthChart'), {
+
+type:'line',
+
+data:{
+labels:monthLabels,
+datasets:[{
+label:'Monthly Sales',
+data:monthValues,
+borderColor:'#3b82f6',
+fill:false,
+tension:0.3
+}]
+}
+
+});
+
+</script>
+
+</body>
+
+</html>
